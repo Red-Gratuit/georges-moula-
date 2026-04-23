@@ -5,17 +5,18 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
+require('dotenv').config();
 
-// Configuration
-const BOT_TOKEN = '8640794661:AAFgJuB94wZuJtf6j9QJcT_a6BqFP_fQg5k';
+// Configuration from environment variables
+const BOT_TOKEN = process.env.BOT_TOKEN;
 const BOT_URL = `https://api.telegram.org/bot${BOT_TOKEN}`;
-const WEBHOOK_URL = 'https://web-production-6ccec.up.railway.app/webhook';
+const WEBHOOK_URL = process.env.WEBHOOK_URL;
 
-// Configuration URLs
-const CATALOG_URL = 'https://tutuduanyu.org/georgemoula00000';
-const WHATSAPP_NUMBER = '0749657430';
-const TELEGRAM_CHANNEL = 'https://t.me/+nLDghA-4yIU1MTk0';
-const MINI_APP_URL = 'https://web-production-6ccec.up.railway.app/bot.html';
+// Configuration URLs from environment
+const CATALOG_URL = process.env.CATALOG_URL;
+const WHATSAPP_NUMBER = process.env.WHATSAPP_NUMBER;
+const TELEGRAM_CHANNEL = process.env.TELEGRAM_CHANNEL;
+const MINI_APP_URL = process.env.MINI_APP_URL;
 
 // Middleware
 app.use(express.json());
