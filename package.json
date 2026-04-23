@@ -2,17 +2,17 @@
   "name": "georges-moula",
   "version": "1.0.0",
   "description": "Application web pour George Moula",
-  "main": "simple-telegram-bot.js",
+  "main": "python-telegram-bot.py",
   "scripts": {
-    "start": "node simple-telegram-bot.js",
-    "dev": "node simple-telegram-bot.js",
+    "start": "python python-telegram-bot.py",
+    "dev": "python python-telegram-bot.py",
     "python": "python main.py"
   },
   "dependencies": {
     "express": "^4.18.2"
   },
   "devDependencies": {},
-  "keywords": ["telegram", "bot", "express", "web", "products"],
+  "keywords": ["telegram", "bot", "python", "web", "products"],
   "author": "George Moula",
   "license": "MIT"
 }
