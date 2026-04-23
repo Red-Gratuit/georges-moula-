@@ -47,10 +47,15 @@ function displayProducts(filter = 'all') {
   }
 
   container.innerHTML = filtered.map(p => {
-    const imageUrl = p.image.startsWith('data:') ? p.image : p.image;
+    // Utiliser thumbnailImage pour l'affichage dans les cartes
+    const thumbnailUrl = p.thumbnailImage ? p.thumbnailImage : (p.image.startsWith('data:') ? p.image : p.image);
     const mediaElement = p.mediaType === 'video' ? 
-      `<video src="${imageUrl}" autoplay muted loop playsinline style="width: 100%; height: 200px; object-fit: cover;" data-lazy="true"></video>` :
-      `<img src="${imageUrl}" alt="${p.name}" onerror="this.src='bg.jpg'" loading="lazy">`;
+      `<div class="media-container" data-product-id="${p.id}" style="position: relative;">
+        <img src="${thumbnailUrl}" alt="${p.name}" class="card-media" style="width: 100%; height: 200px; object-fit: cover; display: block;" onerror="this.src='bg.jpg'" loading="lazy">
+        <button class="media-next-btn" onclick="event.stopPropagation(); toggleMedia(${p.id})" style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: white; border: none; padding: 8px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; z-index: 10; font-weight: bold;">▶️ Video</button>
+        <video src="${p.image}" class="card-video" style="width: 100%; height: 200px; object-fit: cover; display: none;" controls preload="metadata" muted></video>
+      </div>` :
+      `<img src="${thumbnailUrl}" alt="${p.name}" style="width: 100%; height: 200px; object-fit: cover;" onerror="this.src='bg.jpg'" loading="lazy">`;
     
     // Badge de catégorie pour les billets/produits personnalisés
     const categoryBadge = p.custom ? 
@@ -91,6 +96,48 @@ function displayProducts(filter = 'all') {
 }
 
 // ==========================================
+// 🎯 BASCULEMENT PHOTO/VIDÉO DANS LES CARTES
+// ==========================================
+function toggleMedia(productId) {
+  console.log('Toggle media called for product:', productId);
+  
+  const container = document.querySelector(`.media-container[data-product-id="${productId}"]`);
+  if (!container) {
+    console.log('Container not found for product:', productId);
+    return;
+  }
+  
+  const img = container.querySelector('.card-media');
+  const video = container.querySelector('.card-video');
+  const btn = container.querySelector('.media-next-btn');
+  
+  console.log('Elements found:', { img: !!img, video: !!video, btn: !!btn });
+  
+  if (!img || !video || !btn) return;
+  
+  // Vérifier l'état actuel
+  const isImageVisible = img.style.display !== 'none' && img.style.display !== '';
+  
+  console.log('Current state - image visible:', isImageVisible);
+  
+  if (isImageVisible) {
+    // Afficher la vidéo, cacher la photo
+    img.style.display = 'none';
+    video.style.display = 'block';
+    btn.textContent = '🖼️ Photo';
+    
+    // Démarrer la vidéo
+    video.play().catch(e => console.log('Video play error:', e));
+  } else {
+    // Afficher la photo, cacher la vidéo
+    img.style.display = 'block';
+    video.style.display = 'none';
+    video.pause();
+    btn.textContent = '▶️ Video';
+  }
+}
+
+// ==========================================
 // 🎯 AFFICHER DÉTAILS PRODUIT (MODAL) - PRODUITS PERSONNALISÉS
 // ==========================================
 function showProduct(id) {
@@ -100,10 +147,11 @@ function showProduct(id) {
   const product = allProducts.find(p => p.id === id);
   if (!product) return;
 
-  const imageUrl = product.image.startsWith('data:') ? product.image : product.image;
+  // Pour la modal, afficher directement la vidéo complète si c'est une vidéo
+  const modalMediaUrl = product.mediaType === 'video' ? product.image : (product.thumbnailImage || product.image);
   const mediaElement = product.mediaType === 'video' ? 
-    `<video src="${imageUrl}" autoplay muted loop controls preload="metadata" style="width: 100%; max-height: 300px; border-radius: 12px;"></video>` :
-    `<img src="${imageUrl}" alt="${product.name}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px;" onerror="this.src='bg.jpg'" loading="lazy">`;
+    `<video src="${modalMediaUrl}" autoplay muted loop controls preload="metadata" style="width: 100%; max-height: 300px; border-radius: 12px;" onerror="this.src='bg.jpg'"></video>` :
+    `<img src="${modalMediaUrl}" alt="${product.name}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 12px;" onerror="this.src='bg.jpg'" loading="lazy">`;
 
   const categoryText = product.category === 'billet' ? '💨 Billet' : 
                         product.category === 'stup' ? '🚬 Stup' : '🆕 Personnalisée';

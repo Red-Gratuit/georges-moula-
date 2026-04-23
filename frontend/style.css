@@ -1477,6 +1477,55 @@ img {
   color: var(--tg-theme-hint-color);
 }
 
+/* SERVICE AND DELIVERY SECTION */
+.service-and-delivery-section {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 25px;
+  margin-top: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.service-info {
+  display: grid;
+  gap: 20px;
+}
+
+.service-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.service-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.service-icon {
+  font-size: 2rem;
+  margin-right: 15px;
+  min-width: 40px;
+  text-align: center;
+}
+
+.service-details h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--tg-theme-text-color);
+}
+
+.service-details p {
+  margin: 4px 0;
+  color: var(--tg-theme-hint-color);
+  font-size: 0.95rem;
+}
+
 .hours-section {
   background: var(--card-bg);
   border-radius: 16px;
